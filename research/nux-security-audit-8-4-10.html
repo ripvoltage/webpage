@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>GESTOR DE PAQUETES NUX</title>
+  <style type="text/css">
+	body {
+	background-image: url("../etc/3.png");
+	background-repeat: repeat;
+	color: #000000;
+	font-family: "Times New Roman", Times, serif;
+	margin: 20px 0;
+	}
+    .layout-wrapper {
+      width: 94%;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    h1, h2, h3 {
+      font-family: Arial, Helvetica, sans-serif;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+    .win-box {
+      background-color: #C0C0C0;
+      border: 3px outset #FFFFFF;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+    .win-titlebar {
+      background: linear-gradient(90deg, #000080, #1084d0);
+      color: #FFFFFF;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      padding: 3px 6px;
+      margin-bottom: 10px;
+    }
+    .status-bad {
+      font-weight: bold;
+      color: #FF0000;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px inset #ffffff;
+      background-color: #ffffff;
+    }
+    table.data-table th {
+      background-color: #000080;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      text-align: left;
+      padding: 5px 4px;
+      border: 1px solid #808080;
+    }
+    table.data-table td {
+      font-size: 12px;
+      padding: 5px 4px;
+      border: 1px solid #808080;
+      vertical-align: top;
+      line-height: 1.3;
+    }
+    .crit {
+      background-color: #FFCCCC;
+      font-weight: bold;
+      color: #990000;
+    }
+    .high {
+      background-color: #FFE5CC;
+      font-weight: bold;
+      color: #CC6600;
+    }
+    .med {
+      background-color: #FFFFCC;
+      color: #886600;
+    }
+    pre, code {
+      font-family: "Courier New", Courier, monospace;
+      background-color: #000000;
+      color: #00FF66;
+      padding: 6px;
+      display: block;
+      overflow-x: auto;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    p {
+      line-height: 1.35;
+      margin: 8px 0;
+    }
+    ol, ul {
+      margin: 8px 0 8px 20px;
+      padding-left: 0;
+    }
+    li {
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+    hr.bevel {
+      border: 0;
+      height: 2px;
+      border-top: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      margin: 10px 0;
+    }
+    .btn-top {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      color: #000000;
+      background-color: #C0C0C0;
+      border: 2px outset #FFFFFF;
+      padding: 5px 16px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-top:active {
+      border: 2px inset #FFFFFF;
+    }
+  </style>
+</head>
+
+<body>
+<a name="top"></a>
+
+<div class="layout-wrapper">
+
+  <!-- BANNER DE ENCABEZADO -->
+  <div class="win-box">
+    <div class="win-titlebar">
+      <span>C:\NICOLAS\REPORTE_AUDITORIA_SEGURIDAD.TXT - Bloc de notas</span>
+    </div>
+
+    <center>
+      <font size="5" color="#800000"><b>REPORTE DE SEGURIDAD DEL GESTOR DE PAQUETES NUX</b></font><br>
+      <font size="3"><i>Autor: <a href="../index.html" style="color: #000080;">Nicolás Agustín Bustos Lescano</a></i></font><br>
+      <font size="2">Evaluación de Vulnerabilidades de Código Fuente para el Gestor de Paquetes "nux" de Nucora Linux</font>
+      <hr class="bevel">
+      <font size="2">
+        <b>Software Auditado:</b> <code>nux v8.4.10</code><br>
+        <b>Plataforma Objetivo:</b> Nucora ST 3.0
+      </font>
+      <br><br>
+      <a href="../index.html" class="btn-top">&laquo; Volver a index.html</a>
+    </center>
+  </div>
+
+  <!-- RESUMEN EJECUTIVO -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 1: VEREDICTO</b></div>
+    <table width="100%" cellpadding="6" cellspacing="2">
+      <tr>
+        <td>
+          <p>
+            Aunque <b>nux</b> introduce ideas útiles (cambios de estado atómicos, instantáneas, archivos de bloqueo), la base de código opera por completo como <b>UID 0 (root)</b> mientras realiza varias operaciones que se conocen en la ingeniería de seguridad por conducir a la <b>escalada local de privilegios (LPE) instantánea</b> y a la <b>ejecución remota de código arbitrario (RCE)</b>.
+          </p>
+          <p>
+            <b>Peligro Principal:</b> Cualquier persona que controle un paquete no confiable o pueda alterar el tráfico de red puede obtener el control total de root en la máquina de destino con cero resistencia a la explotación.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- TABLA DE VULNERABILIDADES -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 2: TABLA COMPLETA DE VULNERABILIDADES</b></div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th width="6%">ID</th>
+          <th width="14%">Severidad</th>
+          <th width="24%">Vulnerabilidad</th>
+          <th width="24%">Ubicación en Código</th>
+          <th width="32%">Impacto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="center"><b>01</b></td>
+          <td class="crit" align="center">CRÍTICA</td>
+          <td><b>Uso de `ldd` en Archivos No Confiables</b></td>
+          <td><code>cmd/key.go:181</code><br><code>cmd/checkdeps.go:44</code></td>
+          <td>Ejecutar <code>ldd</code> invoca el enlazador dinámico (<code>ld.so</code>). Archivos ELF maliciosos pueden ejecutar constructores init como root.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>02</b></td>
+          <td class="crit" align="center">CRÍTICA</td>
+          <td><b>Ejecución Ciega de Binarios</b></td>
+          <td><code>cmd/key.go:192-205</code></td>
+          <td>Cuando las pruebas de control de calidad (QA) están habilitadas, cada binario nuevo en <code>/usr/bin/</code> se ejecuta directamente mediante <code>exec.Command(f, "--version")</code> como root.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>03</b></td>
+          <td class="crit" align="center">CRÍTICA</td>
+          <td><b>Trampa de Autoescalada SUID</b></td>
+          <td><code>cmd/doctor.go:94</code><br><code>cmd/triggers.go:139</code></td>
+          <td><code>doctor</code> y los disparadores ejecutan <code>chown 0:0</code> y <code>chmod 4755</code> (setuid root) en nombres de binarios específicos sin verificar los hashes del archivo.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>04</b></td>
+          <td class="crit" align="center">CRÍTICA</td>
+          <td><b>Ausencia de Firmas Digitales</b></td>
+          <td><code>cmd/update.go:264</code><br><code>cmd/install.go:242</code></td>
+          <td>Sin firmas GPG / Ed25519 en <code>packages.list</code>. El hash SHA-256 proviene de datos de red en texto plano no confiables. MITM = toma de control total de root.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>05</b></td>
+          <td class="high" align="center">ALTA</td>
+          <td><b>Sobrescritura Arbitraria de Archivos</b></td>
+          <td><code>cmd/install.go:462</code><br><code>cmd/localinstall.go:44</code></td>
+          <td>Los paquetes pueden escribir en rutas como <code>/root/.ssh/authorized_keys</code> o <code>/etc/sudoers</code> sin límites de ruta seguros.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>06</b></td>
+          <td class="high" align="center">ALTA</td>
+          <td><b>Descompresión SUID Sin Restricciones</b></td>
+          <td><code>cmd/install.go:526-532</code></td>
+          <td>Se permite que los archivos comprimidos de los paquetes establezcan permisos SUID/SGID directamente en la máquina de destino al ser extraídos.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>07</b></td>
+          <td class="high" align="center">ALTA</td>
+          <td><b>Condiciones de Carrera en `/tmp`</b></td>
+          <td><code>bootstrap/install.sh:6-10</code></td>
+          <td>Utiliza rutas estáticas <code>/tmp/nux.nux</code> y <code>/tmp/nux</code> en el directorio <code>/tmp</code> con permisos globales de escritura. Vulnerable a ataques de enlaces simbólicos (symlink).</td>
+        </tr>
+        <tr>
+          <td align="center"><b>08</b></td>
+          <td class="med" align="center">MEDIA</td>
+          <td><b>Telemetría Silenciosa / Control Remoto de Canal</b></td>
+          <td><code>cmd/telemetry.go:54, 122</code></td>
+          <td>Recopila hashes de hardware sin el consentimiento del usuario. La respuesta de telemetría puede cambiar remotamente el canal de publicación del usuario.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>09</b></td>
+          <td class="med" align="center">MEDIA</td>
+          <td><b>Denegación de Servicio (DoS) por Bloqueo Bloqueado</b></td>
+          <td><code>cmd/lock.go:16</code></td>
+          <td>Usa creación de archivos en lugar de <code>flock(2)</code> del kernel. Si el proceso falla o recibe <code>SIGKILL</code>, nux se bloquea a sí mismo permanentemente.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>10</b></td>
+          <td class="med" align="center">MEDIA</td>
+          <td><b>Verificación de Caché Solo por Tamaño</b></td>
+          <td><code>cmd/download.go:85</code></td>
+          <td>La comprobación de caché solo compara <code>file.Size == pkg.Size</code>. Los archivos corruptos o alterados con una longitud coincidente superan la verificación.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECCIÓN DE ANÁLISIS PROFUNDO -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 3: AUTOPSIA DE FRAGMENTOS DE CÓDIGO</b></div>
+
+    <!-- PROBLEMA 1 -->
+    <h3>1. La Trampa de 'ldd' (`cmd/key.go` y `cmd/checkdeps.go`)</h3>
+    <p>El código invoca directamente la utilidad del sistema <code>ldd</code> en archivos descomprimidos desde los paquetes:</p>
+    <pre>// Desde cmd/key.go (Línea 180):
+for _, f := range files {
+    if strings.HasSuffix(f, ".so") || strings.Contains(f, ".so.") {
+        out, err := exec.Command("ldd", f).CombinedOutput() // &lt;-- ¡EJECUCIÓN DE CÓDIGO!
+        if err == nil && strings.Contains(string(out), "not found") {
+            lddClean = false
+            break
+        }
+    }
+}</pre>
+    <p>
+      <b>Por qué rompe la seguridad:</b> En sistemas basados en glibc, ejecutar <code>ldd</code> en un archivo ELF o en un objeto compartido no confiable ejecuta en realidad el enlazador dinámico, el cual puede ejecutar código de la biblioteca (por ejemplo, rutinas de inicialización o intérpretes ELF personalizados).
+    </p>
+
+    <hr class="bevel">
+
+    <!-- PROBLEMA 2 -->
+    <h3>2. Escalada SUID Sin Verificar (`cmd/doctor.go`)</h3>
+    <p>El diagnóstico del sistema intenta "corregir" permisos rotos otorgando privilegios setuid root a los archivos:</p>
+    <pre>// Desde cmd/doctor.go (Línea 92):
+for p, m := range sm {
+    if i, err := os.Lstat(p); err == nil && i.Mode()&os.ModeSetuid == 0 {
+        os.Chown(p, 0, 0);       // ¡Cambia el propietario a root!
+        os.Chmod(p, m);          // ¡Establece ModeSetuid (4755)!
+        sf++
+    }
+}</pre>
+    <p>
+      <b>Por qué rompe la seguridad:</b> No verifica si el binario en <code>/usr/bin/sudo</code> o <code>/usr/bin/pkexec</code> es legítimo. Si un usuario o script malicioso coloca un binario de puerta trasera personalizado allí, ejecutar <code>nux doctor</code> lo convierte automáticamente en un binario setuid-root.
+    </p>
+
+    <hr class="bevel">
+
+    <!-- PROBLEMA 3 -->
+    <h3>3. Índice en Texto Plano y Firmas Faltantes (`cmd/update.go`)</h3>
+    <pre>// Desde cmd/update.go (Línea 264):
+body, newIndex, status, headers, err := fetchPackagesList(getStableListURL(), meta)
+// ...
+os.WriteFile(IndexCache, merged, 0644)</pre>
+    <p>
+      <b>Por qué rompe la seguridad:</b> El gestor de paquetes descarga <code>packages.list</code> a través de HTTP/HTTPS plano sin verificar una firma digital (como PGP/GPG o Ed25519). Si un atacante altera el servidor web, el DNS o el espejo, puede inyectar paquetes maliciosos con hashes SHA-256 coincidentes.
+    </p>
+  </div>
+
+  <!-- CÓMO SOLUCIONARLO (REMEDIACIÓN) -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 4: LISTA DE VERIFICACIÓN DE REPARACIÓN (CÓMO SOLUCIONARLO)</b></div>
+    <ol>
+      <li><b>Reemplazar <code>ldd</code> con análisis estático de ELF:</b> Utilizar el paquete integrado de Go <code>debug/elf</code> para inspeccionar <code>ImportedLibraries()</code> sin ejecutar los binarios.</li>
+      <li><b>Implementar Firmas Digitales:</b> Firmar <code>packages.list</code> con una clave privada Ed25519 o GPG e incluir la clave pública junto con <code>nux</code>. Rechazar cualquier actualización del repositorio que no supere la verificación.</li>
+      <li><b>Detener la Ejecución de Binarios Instalados:</b> Eliminar <code>exec.Command(f, "--version")</code> de los ganchos (hooks) de QA a nivel de root.</li>
+      <li><b>Aplicar una Lista Blanca de Extracción Segura:</b> Restringir la descompresión de paquetes estrictamente a <code>/usr</code> y rutas saneadas; prohibir rutas con <code>..</code> y nunca sobrescribir sin respaldo en instalaciones locales.</li>
+      <li><b>Utilizar Bloqueo de Archivos del Kernel:</b> Reemplazar <code>os.OpenFile(..., O_EXCL)</code> con <code>golang.org/x/sys/unix.Flock()</code> para que los bloqueos se liberen automáticamente si ocurre un cierre inesperado.</li>
+      <li><b>Asegurar el Script de Bootstrap:</b> Usar <code>mktemp -d</code> con permisos restringidos (0700) en lugar de nombres de archivo predecibles en <code>/tmp</code>.</li>
+    </ol>
+  </div>
+
+  <!-- BOTONES DE NAVEGACIÓN -->
+  <center>
+    <br>
+    <a href="../index.html" class="btn-top">&laquo; Volver a index.html</a> &nbsp;
+    <a href="#top" class="btn-top">[ Volver arriba ]</a>
+    <br><br>
+  </center>
+
+</div>
+
+</body>
+</html>

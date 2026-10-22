@@ -1,0 +1,421 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>AUDITORÍA DE SEGURIDAD Y ARQUITECTURA DE PHOTOCRAFT</title>
+  <style type="text/css">
+	body {
+	background-image: url("../etc/3.png");
+	background-repeat: repeat;
+	color: #000000;
+	font-family: "Times New Roman", Times, serif;
+	margin: 20px 0;
+	}
+    .layout-wrapper {
+      width: 94%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    h1, h2, h3 {
+      font-family: Arial, Helvetica, sans-serif;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+    .win-box {
+      background-color: #C0C0C0;
+      border: 3px outset #FFFFFF;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+    .win-titlebar {
+      background: linear-gradient(90deg, #000080, #1084d0);
+      color: #FFFFFF;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      padding: 3px 6px;
+      margin-bottom: 10px;
+    }
+    .status-good {
+      font-weight: bold;
+      color: #006600;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px inset #ffffff;
+      background-color: #ffffff;
+    }
+    table.data-table th {
+      background-color: #000080;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      text-align: left;
+      padding: 5px 4px;
+      border: 1px solid #808080;
+    }
+    table.data-table td {
+      font-size: 12px;
+      padding: 5px 4px;
+      border: 1px solid #808080;
+      vertical-align: top;
+      line-height: 1.3;
+    }
+    .pass {
+      background-color: #CCFFCC;
+      font-weight: bold;
+      color: #006600;
+    }
+    .info {
+      background-color: #E6F0FA;
+      font-weight: bold;
+      color: #003366;
+    }
+    .badge-pass {
+      background-color: #006600;
+      color: #FFFFFF;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 1px 4px;
+    }
+    pre, code {
+      font-family: "Courier New", Courier, monospace;
+      background-color: #000000;
+      color: #00FF66;
+      padding: 6px;
+      display: block;
+      overflow-x: auto;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    code.inline {
+      display: inline;
+      padding: 1px 3px;
+      font-size: 11px;
+    }
+    p {
+      line-height: 1.35;
+      margin: 8px 0;
+    }
+    ol, ul {
+      margin: 8px 0 8px 20px;
+      padding-left: 0;
+    }
+    li {
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+    hr.bevel {
+      border: 0;
+      height: 2px;
+      border-top: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      margin: 10px 0;
+    }
+    .btn-top {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      color: #000000;
+      background-color: #C0C0C0;
+      border: 2px outset #FFFFFF;
+      padding: 5px 16px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-top:active {
+      border: 2px inset #FFFFFF;
+    }
+  </style>
+</head>
+
+<body>
+<a name="top"></a>
+
+<div class="layout-wrapper">
+
+  <!-- BANNER DE ENCABEZADO -->
+  <div class="win-box">
+    <div class="win-titlebar">
+      <span>C:\NICOLAS\REPORTE_REVISION_SEGURIDAD.TXT - Bloc de notas</span>
+    </div>
+
+    <center>
+      <font size="5" color="#000080"><b>EDITOR DE IMÁGENES PHOTOCRAFT: AUDITORÍA DE SEGURIDAD DEFENSIVA Y ARQUITECTURA</b></font><br>
+      <font size="3"><i>Autor: <a href="../index.html" style="color: #000080;">Nicolás Agustín Bustos Lescano</a></i></font><br>
+      <font size="2">Revisión independiente de arquitectura, seguridad de memoria y superficie de ataque de PhotoCraft</font>
+      <hr class="bevel">
+      <font size="2">
+        <b>Software Auditado:</b> <code>PhotoCraft v0.7.0 (storytold/photocraft)</code><br>
+        <b>Implementación:</b> 100% Rust (egui/wgpu nativo + WebAssembly) &nbsp;|&nbsp; <b>Tamaño del código:</b> ~393.000 LoC<br>
+        <b>Veredicto:</b> <span class="badge-pass">REFORZADO</span> &nbsp;|&nbsp; <b>Fecha:</b> 11 de octubre de 2026
+      </font>
+      <br><br>
+      <a href="../index.html" class="btn-top">&laquo; Volver a index.html</a>
+    </center>
+  </div>
+
+  <!-- RESUMEN EJECUTIVO -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 1: VEREDICTO</b></div>
+    <table width="100%" cellpadding="6" cellspacing="2">
+      <tr>
+        <td>
+          <p>
+            El software de edición de imágenes para escritorio representa históricamente una de las categorías de aplicaciones más vulnerables en la informática[cite: 2]. Productos heredados como <b>Adobe Photoshop</b>, <b>GIMP</b> e <b>ImageMagick</b> han acumulado cientos de vulnerabilidades y exposiciones comunes (CVE) críticas que involucran corrupción de memoria, desbordamientos de pila/heap en analizadores de formatos (PSD, TIFF, EXR), desbordamientos de enteros en rutinas de descompresión, secuestro arbitrario de DLL mediante interfaces binarias de complementos antiguas (ej. filtros <code>.8BF</code>) y ejecución remota de código a través de puentes modernos en Electron/webview[cite: 2].
+          </p>
+          <p>
+            <b>PhotoCraft</b> (<code class="inline">storytold/photocraft</code>) es un editor de imágenes por capas nativo y desarrollado desde cero en Rust, diseñado para ofrecer una paridad operativa 1:1 con Photoshop mientras erradica sistemáticamente estas clases de vulnerabilidades desde su diseño[cite: 2].
+          </p>
+          <p>
+            <b>Evaluación General:</b> La base de código de PhotoCraft exhibe una <b>postura de defensa en profundidad excepcionalmente blindada</b>[cite: 2]. La corrupción de memoria queda matemáticamente eliminada mediante la prohibición de código <code>unsafe</code> a nivel de espacio de trabajo; los analizadores de archivos limitan activamente la asignación de memoria derivada de entradas no confiables y la expansión de descompresión; los complementos de terceros se ejecutan en un entorno aislado (sandbox) WebAssembly con consumo medido de recursos y cero importaciones del sistema huésped; las interfaces de automatización emplean aislamiento del sistema de archivos basado en capacidades (<code class="inline">cap-std</code>); y cada comando central se prueba continuamente contra entradas adversarias mediante pruebas de fuzzing diseñadas para evitar fallos[cite: 2].
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- TABLA DE EVALUACIÓN DEFENSIVA -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 2: TABLA COMPLETA DE SEGURIDAD DEFENSIVA</b></div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th width="5%">ID</th>
+          <th width="15%">Categoría</th>
+          <th width="24%">Control Defensivo</th>
+          <th width="22%">Ubicación en Código</th>
+          <th width="34%">Hallazgos de Auditoría y Calificación de Seguridad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="center"><b>01</b></td>
+          <td class="pass" align="center">SEGURIDAD DE MEMORIA</td>
+          <td><b>Prohibición de `unsafe` en todo el Proyecto</b></td>
+          <td><code>Cargo.toml:62</code><br><code>crates/*</code></td>
+          <td><code>unsafe_code = "forbid"</code> en todo el espacio de trabajo de 393k LoC[cite: 2]. Desbordamientos de búfer, uso de memoria tras liberación (use-after-free) y confusión de tipos quedan eliminados desde la construcción[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>02</b></td>
+          <td class="pass" align="center">FFI AISLADO</td>
+          <td><b>Auxiliar Cocoa Estrictamente Limitado</b></td>
+          <td><code>crates/tablet/src/macos.rs</code></td>
+          <td>Solo 3 líneas de <code>unsafe</code> en todo el repositorio (monitor de eventos locales en AppKit para inclinación/presión del lápiz)[cite: 2]. Garantías sólidas de tiempo de vida y uso de <code>try_borrow_mut</code> evitan bloqueos por reentrada[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>03</b></td>
+          <td class="pass" align="center">DEFENSA DE ANALIZADORES</td>
+          <td><b>Límite contra Bombas de Descompresión</b></td>
+          <td><code>crates/format/src/zip.rs</code><br><code>crates/psd/src/compression.rs</code></td>
+          <td>La preasignación se limita a <code>raw.len() * 1032</code> y a un máximo de 64 MiB; los bytes descomprimidos se procesan mediante <code>.take(max + 1)</code>[cite: 2]. Previene errores de falta de memoria (OOM) causados por archivos zip/psd maliciosos[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>04</b></td>
+          <td class="pass" align="center">DEFENSA DE ANALIZADORES</td>
+          <td><b>Dimensiones y Aritmética Verificadas</b></td>
+          <td><code>crates/psd/src/header.rs</code><br><code>crates/psd/src/io.rs</code></td>
+          <td>Las dimensiones del lienzo están limitadas a 300.000&times;300.000; la cantidad de canales se limita a 56[cite: 2]. Todas las búsquedas de desplazamiento utilizan operaciones aritméticas comprobadas; los teselas COW dispersos evitan la asignación de grandes búferes planos[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>05</b></td>
+          <td class="pass" align="center">EXTENSIBILIDAD</td>
+          <td><b>Entorno Sandbox WASM Sin Importaciones</b></td>
+          <td><code>crates/plugins/src/runtime.rs</code><br><code>crates/plugins/src/lib.rs</code></td>
+          <td>Los filtros de terceros se ejecutan en <code>wasmi</code> nativo en Rust[cite: 2]. Los módulos con cualquier importación (WASI, sistema de archivos, red, reloj del sistema) se rechazan de inmediato[cite: 2]. Los límites de cómputo imponen tiempos máximos de ejecución[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>06</b></td>
+          <td class="pass" align="center">ARQUITECTURA</td>
+          <td><b>Rechazo de Complementos Nativos `.8BF`</b></td>
+          <td><code>docs/architecture.md:478</code><br><code>book/src/security/threat-model.md</code></td>
+          <td>Los complementos nativos de C++ para Photoshop se rechazan por diseño arquitectónico, eliminando el principal vector histórico de persistencia y ejecución de código en editores de imágenes[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>07</b></td>
+          <td class="pass" align="center">IPC / RED</td>
+          <td><b>Autenticación de Token Segura contra Tiempos</b></td>
+          <td><code>crates/automation/src/security.rs</code></td>
+          <td>El servidor de control TCP en bucle local (loopback) exige un token de portador CSPRNG de 256 bits antes de procesar métodos[cite: 2]. Se verifica con una operación XOR en tiempo constante para prevenir ataques de análisis de tiempo por canales laterales[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>08</b></td>
+          <td class="pass" align="center">SISTEMA DE ARCHIVOS</td>
+          <td><b>Aislamiento por Capacidades (`cap-std`)</b></td>
+          <td><code>crates/automation/src/workspace.rs</code></td>
+          <td>Los manejadores de directorio se gestionan como capacidades[cite: 2]. Las rutas se verifican contra traversales (<code>..</code>), nombres de dispositivos reservados en Windows (<code>CON</code>, <code>NUL</code>) y escapes por enlaces simbólicos[cite: 2]. Los comandos no autorizados fallan en modo seguro[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>09</b></td>
+          <td class="pass" align="center">CONFIABILIDAD</td>
+          <td><b>Pruebas de Fuzzing Adversarias "Sin Bloqueos"</b></td>
+          <td><code>AGENTS.md:§3</code><br><code>crates/engine/tests/panic_hunt.rs</code></td>
+          <td>Clippy prohíbe el uso de <code>unwrap/panic</code>[cite: 2]. La suite de pruebas <code>panic_hunt</code> somete a fuzzer a los ~700 comandos del motor con coordenadas extremas, valores NaN, opacidades negativas y colecciones corruptas[cite: 2].</td>
+        </tr>
+        <tr>
+          <td align="center"><b>10</b></td>
+          <td class="pass" align="center">SUPERFICIE DE ATAQUE</td>
+          <td><b>Sin Entorno Webview / Chromium</b></td>
+          <td><code>docs/architecture.md:15</code><br><code>AGENTS.md</code></td>
+          <td>Interfaz nativa egui/eframe sobre wgpu[cite: 2]. Evita todas las vulnerabilidades de motores de búsqueda, alteración del DOM, escapes de nodeIntegration en Electron y ejecuciones remotas por controladores de protocolo[cite: 2].</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECCIÓN DE ANÁLISIS PROFUNDO -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 3: AUTOPSIA DEL CÓDIGO FUENTE (PUNTOS FUERTES DE PHOTOCRAFT)</b></div>
+
+    <!-- CARACTERÍSTICA 1 -->
+    <h3>1. Límite contra Bombas de Descompresión (`crates/format/src/zip.rs`)</h3>
+    <p>
+      En muchos editores de imágenes nativos, la lectura de un archivo comprimido o búfer de capa depende de la longitud sin comprimir declarada en un encabezado no confiable para asignar memoria previamente[cite: 2]. Un archivo de 10 KB que declare un tamaño descomprimido de 16 GB causa una falla inmediata por falta de memoria (OOM)[cite: 2]. El decodificador de contenedores de PhotoCraft limita sistemáticamente estas asignaciones:
+    </p>
+    <pre>// Desde crates/format/src/zip.rs (Líneas 212-221):
+let data = match e.method {
+    0 => raw.to_vec(),
+    8 => {
+        // La longitud sin comprimir proviene de un encabezado ZIP no confiable: un
+        // archivo pequeño falsificado no debe reservar gigabytes de antemano, por lo que
+        // la preasignación se limita (DEFLATE se expande como máximo ~1032x).
+        let mut out = Vec::with_capacity(e.uncompressed.min(raw.len().saturating_mul(1032)).min(64 &lt;&lt; 20));
+        flate2::read::DeflateDecoder::new(raw)
+            .take((max as u64).saturating_add(1))
+            .read_to_end(&mut out)
+            .map_err(|err| FormatError::corrupt(format!("zip entry `{}`: {err}", e.name)))?;
+        out
+    }
+    // ...
+};</pre>
+    <p>
+      <b>Por qué es seguro:</b> La capacidad de asignación está estrictamente acotada por el máximo matemático de expansión de DEFLATE (1032&times;) y con un tope de 64 MiB[cite: 2]. El flujo está limitado físicamente mediante <code class="inline">.take(...)</code>, garantizando que un flujo manipulado no pueda escribir gigabytes desmedidos en la memoria[cite: 2].
+    </p>
+
+    <hr class="bevel">
+
+    <!-- CARACTERÍSTICA 2 -->
+    <h3>2. Entorno Aislado WebAssembly Sin Importaciones del Sistema (`crates/plugins/src/runtime.rs`)</h3>
+    <p>
+      Los complementos de terceros representan un vector de ataque frecuente[cite: 2]. Adobe Photoshop ejecuta archivos C++ DLL/dylib no administrados con todos los privilegios del usuario[cite: 2]. PhotoCraft reemplaza esto con un entorno de ejecución WebAssembly aislado donde cualquier importación externa está prohibida:
+    </p>
+    <pre>// Desde crates/plugins/src/runtime.rs (Líneas 131-137):
+let module = Module::new(&amp;engine, bytes).map_err(|e| Error::Module(e.to_string()))?;
+if let Some(imp) = module.imports().next() {
+    return Err(Error::Abi(format!(
+        "el módulo importa `{}.{}`, pero los complementos no reciben importaciones del sistema (sin WASI, archivos o red)",
+        imp.module(),
+        imp.name()
+    )));
+}</pre>
+    <p>
+      <b>Por qué es seguro:</b> Al rechazar todas las importaciones en el momento de la instanciación, un módulo de complemento compilado no puede realizar llamadas al sistema, acceder al sistema de archivos, abrir sockets de red, consultar variables de entorno o leer la hora del sistema[cite: 2]. Junto con el control del consumo de instrucciones (<code class="inline">FUEL_SLICE = 20_000_000</code>) y límites de memoria lineal (512 MiB), los filtros maliciosos o defectuosos no pueden congelar el editor ni vulnerar el sistema huésped[cite: 2].
+    </p>
+
+    <hr class="bevel">
+
+    <!-- CARACTERÍSTICA 3 -->
+    <h3>3. Autenticación de Token en Tiempo Constante (`crates/automation/src/security.rs`)</h3>
+    <p>
+      PhotoCraft admite automatización mediante scripts e integración con agentes a través de un protocolo TCP JSON en bucle local y el Protocolo de Contexto de Modelo (MCP)[cite: 2]. Para evitar que procesos locales no autorizados tomen el control, cada conexión requiere una validación de token autenticada ejecutada en tiempo constante:
+    </p>
+    <pre>// Desde crates/automation/src/security.rs (Líneas 96-101):
+/// Compara tokens de ancho fijo sin salida anticipada al encontrar un byte distinto.
+pub fn token_matches(expected: &amp;str, supplied: &amp;str) -> bool {
+    if expected.len() != TOKEN_HEX_LEN || supplied.len() != TOKEN_HEX_LEN {
+        return false;
+    }
+    expected.bytes().zip(supplied.bytes()).fold(0u8, |different, (a, b)| different | (a ^ b)) == 0
+}</pre>
+    <p>
+      <b>Por qué es seguro:</b> Una comparación común de cadenas de texto (<code class="inline">==</code>) se interrumpe al encontrar el primer byte diferente, filtrando información de tiempo que permitiría a un atacante local adivinar el token byte por byte[cite: 2]. PhotoCraft realiza operaciones XOR acumulativas a lo largo de los 64 caracteres hexadecimales, garantizando un tiempo de ejecución constante[cite: 2].
+    </p>
+
+    <hr class="bevel">
+
+    <!-- CARACTERÍSTICA 4 -->
+    <h3>4. Aislamiento de Directorios Basado en Capacidades (`crates/automation/src/workspace.rs`)</h3>
+    <p>
+      Cuando un cliente de automatización solicita lectura o escritura de archivos, las rutas no se resuelven de forma global[cite: 2]. En su lugar, PhotoCraft emplea descriptores de archivos basados en capacidades (<code class="inline">cap-std</code>) y limpia estrictamente las rutas relativas[cite: 2]:
+    </p>
+    <pre>// Desde crates/automation/src/workspace.rs (Líneas 145-163):
+for component in raw.split('/') {
+    if component.is_empty() { return Err(path_error(raw, "no se permiten componentes de ruta vacíos")); }
+    if component == "." { return Err(path_error(raw, "no se permite el componente de ruta `.`")); }
+    if component == ".." { return Err(path_error(raw, "no se permite la navegación hacia el directorio padre")); }
+    if component.ends_with(['.', ' ']) { return Err(path_error(raw, "no se permiten componentes de ruta que terminen en punto o espacio")); }
+    if is_windows_device_name(component) { return Err(path_error(raw, "no se permiten nombres de dispositivos reservados")); }
+}</pre>
+    <p>
+      <b>Por qué es seguro:</b> Esto deniega técnicas clásicas de salto de directorio (<code class="inline">../../etc/passwd</code>), nombres reservados de Windows (<code class="inline">CON</code>, <code class="inline">NUL</code>, <code class="inline">AUX</code>) y separadores de barra invertida[cite: 2]. Todas las operaciones de entrada/salida ocurren exclusivamente a través del descriptor del directorio asignado, evitando ataques de escape por enlaces simbólicos[cite: 2].
+    </p>
+
+    <hr class="bevel">
+
+    <!-- CARACTERÍSTICA 5 -->
+    <h3>5. Pruebas Fuzzing de Entrada Adversaria ("Sin Bloqueos" y `panic_hunt`)</h3>
+    <p>
+      El código de producción tiene prohibido mediante clippy el uso de <code class="inline">unwrap()</code>, <code class="inline">expect()</code> y <code class="inline">panic!</code>[cite: 2]. Para garantizar que entradas maliciosas nunca detengan la aplicación ni corrompan el trabajo del usuario, PhotoCraft incluye una prueba de integración defensiva dedicada:
+    </p>
+    <pre>// Desde crates/engine/tests/panic_hunt.rs (Líneas 40-56):
+let params: Vec&lt;Value&gt; = vec![
+    json!({}),
+    json!({"x": -9, "y": -9, "radius": 0, "amount": 0, "angle": 0, "opacity": 0, "scale": 0, "levels": 0, "tolerance": 0, "gamma": 0, "layer": 999999, "channel": 999, "index": 999999, "count": 0}),
+    json!({"x": 1e5, "y": -1e5, "radius": 300, "amount": 300, "angle": 1e5, "opacity": -100, "scale": -5, "gamma": -1}),
+    json!({"points": [], "from": [0, 0], "to": [0, 0], "stops": [], "matrix": [0, 0, 0, 0, 0, 0], "colors": [], "name": "", "mode": "", "style": ""}),
+];
+for spec in command_specs() {
+    for p in &amp;params {
+        if let Err(why) = run_guarded(spec.id, p) {
+            bad.push(format!("{} [{why}] &lt;- {p}", spec.id));
+        }
+    }
+}</pre>
+    <p>
+      <b>Por qué es seguro:</b> Los aproximadamente 700 comandos del motor son evaluados sistemáticamente con límites anómalos, campos faltantes, índices de capa fuera de rango y valores flotantes extremos[cite: 2]. Se verifica que cada comando devuelva una respuesta de error controlada (<code class="inline">Err</code>) sin generar fallos catastróficos ni bloquear hilos de trabajo[cite: 2].
+    </p>
+  </div>
+
+  <!-- ASPECTOS DESTACADOS MÁS ALLÁ DE LA SEGURIDAD -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 4: PUNTOS DESTACADOS EN ARQUITECTURA Y RENDIMIENTO</b></div>
+    <table width="100%" cellpadding="6" cellspacing="2">
+      <tr>
+        <td>
+          <p>Además de la ingeniería de seguridad defensiva, PhotoCraft demuestra una arquitectura de software ejemplar[cite: 2]:</p>
+          <ul>
+            <li><b>Almacenamiento de Teselas de 256&times;256 con Copy-on-Write:</b> Los datos de píxeles se almacenan en teselas dispersas direccionadas por contenido detrás de <code class="inline">Arc&lt;Tile&lt;F&gt;&gt;</code>[cite: 2]. Las capturas de estado del documento tienen una complejidad de $O(\text{capas})$ en lugar de $O(\text{píxeles})$, lo que permite operaciones de deshacer/rehacer instantáneas, lecturas no bloqueantes de la interfaz gráfica y guardado automático en segundo plano mediante <code class="inline">arc-swap</code> sin duplicar memoria[cite: 2].</li>
+            <li><b>Desacoplamiento Estricto por Capas:</b> Verificado mediante <code class="inline">cargo xtask layers</code> en integración continua[cite: 2]. El motor es 100% independiente de la biblioteca de interfaz de usuario; el frontal en egui actúa solo como una capa de visualización, enviando cada acción del usuario mediante identificadores de comando tipados (<code class="inline">filter.blur.gaussianBlur</code>)[cite: 2].</li>
+            <li><b>Gestión Completa de Profundidad de Color y Perfiles ICC:</b> A diferencia de proyectos tradicionales que dependían de teselas RGB de 8 bits, PhotoCraft soporta múltiples profundidades de bits (8, 16, 32f) y modos de color (RGB, Escala de grises, CMYK, Lab) desde su concepción[cite: 2]. La combinación de capas opera mediante un motor ICC nativo en Rust (<code class="inline">photocraft-cms</code>), y los sombreadores GPU se validan contra el motor de composición en CPU con una precisión de &le; 1/255[cite: 2].</li>
+            <li><b>Automatización Orientada a Entornos Sin Interfaz (Headless):</b> Todas las herramientas, ajustes y opciones de menú están expuestas a través de la interfaz de línea de comandos y el protocolo MCP, lo que permite flujos de trabajo con agentes de IA, procesamiento masivo y verificación automatizada sin requerir un servidor gráfico[cite: 2].</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- RECOMENDACIONES DE MEJORA -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 5: RECOMENDACIONES PARA EL FUTURO</b></div>
+    <ol>
+      <li><b>Fuzzing Continuo Programado:</b> Aunque existen objetivos de fuzzing en <code class="inline">crates/*/fuzz</code>, su integración en canalizaciones continuas de OSS-Fuzz / ClusterFuzz asegurará la protección contra regresiones en nuevos módulos de formato[cite: 2].</li>
+      <li><b>Transporte Local Cifrado:</b> El canal de control TCP en bucle local utiliza JSON en texto plano sobre <code class="inline">127.0.0.1</code>[cite: 2]. Aunque está protegido por un token de 256 bits, migrar a sockets de dominio Unix con verificación de credenciales (<code class="inline">SO_PEERCRED</code>) en sistemas Unix, o TLS local, mitigará la intercepción en estaciones de trabajo con múltiples usuarios[cite: 2].</li>
+      <li><b>Permisos Granulares en Automatización:</b> Evolucionar la autenticación basada en tokens hacia sesiones con permisos delimitados (por ejemplo, permitir inspección de solo lectura sin autorización para guardar documentos)[cite: 2].</li>
+      <li><b>Trazabilidad de Publicación y SBOM:</b> Generar una lista de materiales de software (SBOM en formato SPDX/CycloneDX) legible por máquinas y firmar criptográficamente los paquetes de entrega mediante Sigstore/cosign en la canalización automatizada de publicaciones[cite: 2].</li>
+    </ol>
+  </div>
+
+  <!-- BOTONES DE NAVEGACIÓN -->
+  <center>
+    <br>
+    <a href="../index.html" class="btn-top">&laquo; Volver a index.html</a> &nbsp;
+    <a href="#top" class="btn-top">[ Volver arriba ]</a>
+    <br><br>
+  </center>
+
+</div>
+
+</body>
+</html>
