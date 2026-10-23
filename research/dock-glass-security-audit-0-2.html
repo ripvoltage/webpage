@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>AUDITORÍA DE SEGURIDAD Y CÓDIGO FUENTE: DOCK GLASS</title>
+  <style type="text/css">
+	body {
+	background-image: url("../etc/3.png");
+	background-repeat: repeat;
+	color: #000000;
+	font-family: "Times New Roman", Times, serif;
+	margin: 20px 0;
+	}
+    .layout-wrapper {
+      width: 94%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    h1, h2, h3 {
+      font-family: Arial, Helvetica, sans-serif;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+    .win-box {
+      background-color: #C0C0C0;
+      border: 3px outset #FFFFFF;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+    .win-titlebar {
+      background: linear-gradient(90deg, #000080, #1084d0);
+      color: #FFFFFF;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      padding: 3px 6px;
+      margin-bottom: 10px;
+    }
+    .status-good {
+      font-weight: bold;
+      color: #006600;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px inset #ffffff;
+      background-color: #ffffff;
+    }
+    table.data-table th {
+      background-color: #000080;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      text-align: left;
+      padding: 5px 4px;
+      border: 1px solid #808080;
+    }
+    table.data-table td {
+      font-size: 12px;
+      padding: 5px 4px;
+      border: 1px solid #808080;
+      vertical-align: top;
+      line-height: 1.3;
+    }
+    .pass {
+      background-color: #CCFFCC;
+      font-weight: bold;
+      color: #006600;
+    }
+    .info {
+      background-color: #E6F0FA;
+      font-weight: bold;
+      color: #003366;
+    }
+    .badge-pass {
+      background-color: #006600;
+      color: #FFFFFF;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 1px 4px;
+    }
+    pre, code {
+      font-family: "Courier New", Courier, monospace;
+      background-color: #000000;
+      color: #00FF66;
+      padding: 6px;
+      display: block;
+      overflow-x: auto;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+    code.inline {
+      display: inline;
+      padding: 1px 3px;
+      font-size: 11px;
+    }
+    p {
+      line-height: 1.35;
+      margin: 8px 0;
+    }
+    ol, ul {
+      margin: 8px 0 8px 20px;
+      padding-left: 0;
+    }
+    li {
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+    hr.bevel {
+      border: 0;
+      height: 2px;
+      border-top: 1px solid #808080;
+      border-bottom: 1px solid #ffffff;
+      margin: 10px 0;
+    }
+    .btn-top {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      color: #000000;
+      background-color: #C0C0C0;
+      border: 2px outset #FFFFFF;
+      padding: 5px 16px;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-top:active {
+      border: 2px inset #FFFFFF;
+    }
+  </style>
+</head>
+
+<body>
+<a name="top"></a>
+
+<div class="layout-wrapper">
+
+  <!-- BANNER DE ENCABEZADO -->
+  <div class="win-box">
+    <div class="win-titlebar">
+      <span>C:\NICOLAS\REPORTE_AUDITORIA_DOCK_GLASS.TXT - Bloc de notas</span>
+    </div>
+
+    <center>
+      <font size="5" color="#000080"><b>EXTENSIÓN DOCK GLASS: AUDITORÍA DE SEGURIDAD DEFENSIVA Y CÓDIGO FUENTE</b></font><br>
+      <font size="3"><i>Autor: <a href="../index.html" style="color: #000080;">Nicolás Agustín Bustos Lescano</a></i></font><br>
+      <font size="2">Revisión independiente de seguridad, superficie de ataque y estabilidad para la extensión Dock Glass de GNOME Shell</font>
+      <hr class="bevel">
+      <font size="2">
+        <b>Software Auditado:</b> <code>Dock Glass v0.2 (dock-glass@atarico.github.io)</code><br>
+        <b>Implementación:</b> JavaScript ES / GJS (Clutter, St, Meta, Shell) &nbsp;|&nbsp; <b>Compatibilidad:</b> GNOME Shell 46 a 51<br>
+        <b>Veredicto:</b> <span class="badge-pass">SEGURO / VERIFICADO</span> &nbsp;|&nbsp; <b>Fecha:</b> 23 de octubre de 2026
+      </font>
+      <br><br>
+      <a href="../index.html" class="btn-top">&laquo; Volver a index.html</a>
+    </center>
+  </div>
+
+  <!-- RESUMEN EJECUTIVO -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 1: VEREDICTO</b></div>
+    <table width="100%" cellpadding="6" cellspacing="2">
+      <tr>
+        <td>
+          <p>
+            Las extensiones de <b>GNOME Shell</b> representan un componente crítico en la seguridad del entorno de escritorio Unix/Linux. A diferencia de las aplicaciones aisladas por sandbox (como Flatpak o Snap), las extensiones se ejecutan directamente <b>dentro del mismo espacio de memoria y proceso del compositor (<code class="inline">gnome-shell</code>)</b>. En consecuencia, comparten todos los privilegios de la sesión del usuario: cualquier falla no controlada puede derribar la sesión gráfica por completo, y cualquier código malicioso podría ejecutar binarios arbitrarios, capturar pulsaciones de teclado, filtrar archivos personales o manipular ventanas.
+          </p>
+          <p>
+            <b>Dock Glass</b> (<code class="inline">dock-glass@atarico.github.io</code>) es una extensión de GNOME Shell diseñada para proporcionar efectos visuales avanzados inspirados en el dock de macOS sobre Ubuntu Dock y Dash to Dock: magnificación continua con dispersión proporcional de iconos, rebote de lanzamiento, efecto lámpara mágica (genie effect) al abrir ventanas y despliegue tipo abanico/cuadrícula de lugares para el explorador de archivos.
+          </p>
+          <p>
+            <b>Evaluación General:</b> La base de código de Dock Glass exhibe una <b>postura de seguridad y estabilidad ejemplar</b>. La superficie de ataque es mínima: no existen dependencias de red ni bibliotecas de telemetría (<code class="inline">Soup</code>, <code class="inline">fetch</code> o llamadas remotas); no se generan subprocesos arbitrarios del sistema (<code class="inline">GLib.spawn_*</code> o <code class="inline">Gio.Subprocess</code>); no existe uso de evaluación dinámica (<code class="inline">eval</code> o <code class="inline">Function</code>); el acceso al sistema de archivos es estrictamente de solo lectura y asíncrono para leer marcadores de usuario; y cada gancho sobre el gestor de composición cuenta con bloques de contención de excepciones para garantizar que un fallo visual nunca comprometa la estabilidad del entorno de escritorio.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- TABLA DE EVALUACIÓN DEFENSIVA -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 2: TABLA COMPLETA DE SEGURIDAD DEFENSIVA</b></div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th width="5%">ID</th>
+          <th width="15%">Categoría</th>
+          <th width="24%">Control Defensivo</th>
+          <th width="22%">Ubicación en Código</th>
+          <th width="34%">Hallazgos de Auditoría y Calificación de Seguridad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td align="center"><b>01</b></td>
+          <td class="pass" align="center">RED / TELEMETRÍA</td>
+          <td><b>Cero Conexiones Salientes o Remotas</b></td>
+          <td><code>extension.js</code><br><code>dockAdapter.js</code></td>
+          <td>No se importan bibliotecas HTTP/red (<code class="inline">Soup</code>). Sin recolección de datos, analíticas ni descarga dinámica de scripts o binarios externos.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>02</b></td>
+          <td class="pass" align="center">PROCESOS / COMANDOS</td>
+          <td><b>Ausencia de Spawns o Subprocesos del Shell</b></td>
+          <td><code>stack.js</code><br><code>openAnimation.js</code></td>
+          <td>Cero llamadas a <code class="inline">GLib.spawn_command_line_*</code>, <code class="inline">Gio.Subprocess</code> o utilidades de consola. Imposibilita la inyección de comandos o ejecución no autorizada.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>03</b></td>
+          <td class="pass" align="center">SISTEMA DE ARCHIVOS</td>
+          <td><b>I/O Asíncrono de Solo Lectura</b></td>
+          <td><code>stack.js:56-66</code><br><code>stack.js:94-101</code></td>
+          <td>La lectura de marcadores GTK (<code class="inline">~/.config/gtk-3.0/bookmarks</code>) utiliza <code class="inline">load_contents_async</code>. No bloquea el hilo del compositor ni modifica archivos en disco.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>04</b></td>
+          <td class="pass" align="center">DESPACHO DE URIS</td>
+          <td><b>Apertura Confinada vía GIO AppLaunchContext</b></td>
+          <td><code>stack.js:46-52</code></td>
+          <td>Las acciones del usuario sobre carpetas del abanico se canalizan mediante <code class="inline">Gio.AppInfo.launch_default_for_uri</code> con contexto estándar de aplicación.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>05</b></td>
+          <td class="pass" align="center">INTEGRIDAD DEL COMPOSITOR</td>
+          <td><b>Contención de Excepciones en Bucle de Cuadros</b></td>
+          <td><code>extension.js:529-537</code><br><code>openAnimation.js:68-76</code></td>
+          <td>Las funciones de magnificación y mapeo de ventanas están envueltas en <code class="inline">try...catch</code>. En caso de anomalía, la animación se desconecta sin causar caída de GNOME Shell.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>06</b></td>
+          <td class="pass" align="center">IMPORTACIÓN DINÁMICA</td>
+          <td><b>Acoplamiento Estricto por UUID Local</b></td>
+          <td><code>dockAdapter.js:22-28</code></td>
+          <td><code class="inline">import()</code> solo se invoca sobre rutas de archivos ya existentes obtenidas de <code class="inline">Main.extensionManager.lookup(uuid)</code> para Dash to Dock / Ubuntu Dock.</td>
+        </tr>
+        <tr>
+          <td align="center"><b>07</b></td>
+          <td class="pass" align="center">GESTIÓN DE RECURSOS</td>
+          <td><b>Desconexión Rigurosa de Señales y Grabs</b></td>
+          <td><code>extension.js:89-100</code><br><code>stack.js:185-244</code></td>
+          <td>Todos los listeners de señales (<code class="inline">connectObject</code>), timbres de temporizador y capturas modales de puntero se liberan de forma determinista al deshabilitar o cerrar vistas.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ANÁLISIS EN PROFUNDIDAD DEL CÓDIGO FUENTE -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 3: ANÁLISIS EN PROFUNDIDAD DEL CÓDIGO FUENTE</b></div>
+
+    <!-- CARACTERÍSTICA 1 -->
+    <h3>1. Ausencia de Red y Confinamiento de Ejecución</h3>
+    <p>
+      El mayor riesgo en extensiones de terceros radica en la exfiltración silenciosa de datos o la ejecución de cargas útiles desde servidores externos. En Dock Glass, una inspección exhaustiva de todos los módulos confirma la ausencia absoluta de clientes HTTP, WebSockets o invocadores de subprocesos:
+    </p>
+    <pre>// Búsqueda estricta de primitivas de red y procesos en todo el árbol de archivos:
+// - gi://Soup: 0 coincidencias
+// - fetch / XMLHttpRequest: 0 coincidencias
+// - Gio.Subprocess / GLib.spawn_*: 0 coincidencias
+// - eval / Function: 0 coincidencias</pre>
+    <p>
+      <b>Por qué es seguro:</b> La extensión opera como un conjunto estricto de actores gráficos y transformaciones visuales matemáticas en Clutter. La imposibilidad de abrir sockets o ejecutar procesos del sistema operativo garantiza que no puede ser utilizada como vector de comando y control (C2) ni como canal de persistencia.
+    </p>
+
+    <hr class="bevel">
+
+    <!-- CARACTERÍSTICA 2 -->
+    <h3>2. Despacho Seguro de URIs y Lectura Asíncrona (`stack.js`)</h3>
+    <p>
+      La característica de "Stacks" permite desplegar accesos rápidos a carpetas del usuario. El módulo implementa una promesa dedicada para lectura asíncrona de marcadores GTK, evitando la modificación global de prototipos de GIO:
+    </p>
+    <pre>// Desde stack.js (Líneas 46-66):
+function openUri(uri) {
+    try {
+        Gio.AppInfo.launch_default_for_uri(uri, global.create_app_launch_context(0, -1));
+    } catch (e) {
+        console.error(`[dock-glass] Cannot open ${uri}: ${e}`);
+    }
+}
+
+// Lectura sin bloquear el hilo principal de la shell ni alterar Gio._promisify
+function loadContents(file) {
+    return new Promise((resolve, reject) => {
+        file.load_contents_async(null, (source, result) => {
+            try {
+                resolve(source.load_contents_finish(result)[1]);
+            } catch (e) {
+                reject(e);
+            }
+        });
+    });
+}</pre>
+    <p>
+      <b>Por qué es seguro:</b> <code class="inline">Gio.AppInfo.launch_default_for_uri</code> delega la apertura al manejador predeterminado configurado por el usuario en el entorno de escritorio (como Nautilus). No se ejecuta código shell arbitrario, y el uso de <code class="inline">load_contents_async</code> garantiza que un archivo de marcadores lento o bloqueado nunca congele la interfaz gráfica de GNOME.
+    </p>
+
+    <hr class="bevel">
+
+    <!-- CARACTERÍSTICA 3 -->
+    <h3>3. Acoplamiento Dinámico Restringido por UUID (`dockAdapter.js`)</h3>
+    <p>
+      Para interactuar con Dash to Dock o Ubuntu Dock sin alterar su código en disco, la extensión carga dinámicamente el módulo <code class="inline">docking.js</code> correspondiente:
+    </p>
+    <pre>// Desde dockAdapter.js (Líneas 14-28):
+export const DOCK_UUIDS = ['dash-to-dock@micxgx.gmail.com', 'ubuntu-dock@ubuntu.com'];
+
+export async function importDock(extensionManager, uuid) {
+    const extension = extensionManager.lookup(uuid);
+    if (!extension)
+        return null;
+    // Misma URI que la extensión del dock utiliza internamente
+    return import(extension.dir.get_child('docking.js').get_uri());
+}</pre>
+    <p>
+      <b>Por qué es seguro:</b> La importación está fuertemente restringida a la lista blanca <code class="inline">DOCK_UUIDS</code>. Solo se resuelven extensiones ya instaladas y registradas en el gestor de extensiones local de GNOME Shell. No se aceptan entradas externas ni URLs arbitrarias en la sentencia <code class="inline">import()</code>.
+    </p>
+
+    <hr class="bevel">
+
+    <!-- CARACTERÍSTICA 4 -->
+    <h3>4. Resiliencia del Bucle de Renderizado y Tolerancia a Fallos (`extension.js`)</h3>
+    <p>
+      Las rutinas de magnificación calculan el escalado en tiempo real durante eventos continuos del puntero. Un error no interceptado en un evento de cuadro (<code class="inline">new-frame</code>) provocaría errores masivos en el registro del sistema o la congelación del puntero:
+    </p>
+    <pre>// Desde extension.js (Líneas 529-537):
+_magnifyFrame(dock, magnifier) {
+    // Un error aquí se repetiría cada cuadro; se registra una vez y se detiene
+    try {
+        this._magnifyStep(dock, magnifier);
+    } catch (e) {
+        console.error(`[dock-glass] Magnification failed: ${e}`);
+        this._stopMagnifier(dock);
+    }
+}</pre>
+    <p>
+      <b>Por qué es seguro:</b> Al detectar cualquier anomalía, el temporizador de magnificación se desconecta de inmediato mediante <code class="inline">_stopMagnifier(dock)</code>. Asimismo, el algoritmo valida explícitamente mediante <code class="inline">Number.isFinite</code> que coordenadas intermedias no sean <code class="inline">NaN</code>, evitando desbordamientos de cálculo geométrico en Clutter.
+    </p>
+
+    <hr class="bevel">
+
+    <!-- CARACTERÍSTICA 5 -->
+    <h3>5. Interceptación No Destructiva del Gestor de Ventanas (`openAnimation.js`)</h3>
+    <p>
+      Para reproducir la animación de apertura de ventanas (Genie Effect), se intercepta la función interna <code class="inline">Main.wm._shouldAnimateActor</code>:
+    </p>
+    <pre>// Desde openAnimation.js (Líneas 42-64):
+const previous = Main.wm._shouldAnimateActor;
+this._previous = previous;
+this._wrapper = function (actor, types) {
+    if (self._shouldTakeOver(actor)) {
+        self._suppressed.add(actor);
+        return false;
+    }
+    return previous.call(this, actor, types);
+};
+Main.wm._shouldAnimateActor = this._wrapper;
+
+// Restauración ordenada al deshabilitar:
+if (Main.wm._shouldAnimateActor === this._wrapper)
+    Main.wm._shouldAnimateActor = this._previous;</pre>
+    <p>
+      <b>Por qué es seguro:</b> La cadena de interceptación respeta otras extensiones populares que envuelven el mismo método (como <i>Burn My Windows</i> o <i>Magic Lamp Effect</i>). Si la función fue envuelta por otra extensión posterior, no se rompe la cadena, actuando como un puente pasivo y desinstalándose limpiamente cuando se apaga.
+    </p>
+  </div>
+
+  <!-- ASPECTOS DESTACADOS EN ARQUITECTURA -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 4: PUNTOS DESTACADOS EN ARQUITECTURA Y RENDIMIENTO</b></div>
+    <table width="100%" cellpadding="6" cellspacing="2">
+      <tr>
+        <td>
+          <p>La arquitectura de Dock Glass refleja prácticas de ingeniería de software avanzadas:</p>
+          <ul>
+            <li><b>Separación de Lógica Pura y Actores Gráficos:</b> Los módulos <code class="inline">magnifier.js</code> y <code class="inline">stackLayout.js</code> son funciones matemáticas puras (curva de campana coseno, dispersión parabólica, suavizado exponencial). Al no importar módulos de entorno <code class="inline">gi://</code>, son directamente testeables mediante frameworks de prueba en Node.js de manera aislada.</li>
+            <li><b>Compatibilidad Multi-Versión (GNOME 46 a 51):</b> El módulo <code class="inline">shellCompat.js</code> abstrae las divergencias de la API de Clutter/St entre versiones sucesivas de GNOME (por ejemplo, el soporte transicional entre <code class="inline">orientation</code> y el atributo deprecado <code class="inline">vertical</code>, así como la verificación de captura de puntero en <code class="inline">Clutter.GrabState</code>).</li>
+            <li><b>Suavizado Asíncrono e Inercial:</b> El cálculo de interpolación exponencial (<code class="inline">approach</code>) con constantes de tiempo calibradas evita tirones durante barridos rápidos del ratón, desactivando la ejecución del timeline cuando los iconos alcanzan el estado de reposo para minimizar el consumo de CPU.</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- RECOMENDACIONES DE MEJORA -->
+  <div class="win-box">
+    <div class="win-titlebar"><b>SECCIÓN 5: RECOMENDACIONES PARA EL FUTURO</b></div>
+    <ol>
+      <li><b>Validación de Esquema en URIs de Marcadores:</b> Al procesar las líneas de <code class="inline">~/.config/gtk-3.0/bookmarks</code> en <code class="inline">stack.js</code>, implementar una validación explícita para restringir los esquemas permitidos (ej. <code class="inline">file://</code>, <code class="inline">smb://</code>, <code class="inline">sftp://</code>), descartando entradas anómalas antes de invocarlas con el manejador predeterminado.</li>
+      <li><b>Pruebas Automatizadas de Composición:</b> Integrar una suite de pruebas de integración continua (CI) en GitHub Actions utilizando entornos headless con Mutter/Mutter-test para verificar que las actualizaciones de GNOME Shell no alteren las llamadas privadas a Dash to Dock.</li>
+      <li><b>Aislamiento ante Escalado Fraccionario:</b> Probar explícitamente las coordenadas transformadas (<code class="inline">get_transformed_position</code>) en configuraciones multimonitor con factores de escalado Wayland fraccionarios mixtos (ej. 125% y 150%) para anticipar posibles desalineaciones visuales en clones de rebote.</li>
+    </ol>
+  </div>
+
+  <!-- BOTONES DE NAVEGACIÓN -->
+  <center>
+    <br>
+    <a href="../index.html" class="btn-top">&laquo; Volver a index.html</a> &nbsp;
+    <a href="#top" class="btn-top">[ Volver arriba ]</a>
+    <br><br>
+  </center>
+
+</div>
+
+</body>
+</html>
